@@ -1,0 +1,32 @@
+.root{
+    -fx-background-color: white;
+    -fx-background-repeat: no-repeat,no-repeat;
+    -fx-background-size: 110%, 180px;
+    -fx-background-position: center,top;
+}
+
+.menu-bar{
+    -fx-background-color: #BCC8B3 ;
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+}
+
+.menu:hover{
+    -fx-border-color: pink;
+    -fx-font-weight: bold;
+}
+
+label:hover{
+    -fx-font-size: 15pt;
+    -fx-text-fill: green;
+}
+
+.menu-item{
+    -fx-background-color: #BCC8B3;
+    -fx-border-color: #000;
+}
+
+.menu-item:hover{
+    -fx-background-color: #000;
+    -fx-font-weight: bold;
+}
