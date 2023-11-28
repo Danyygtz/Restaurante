@@ -12,18 +12,22 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Stack;
 
 public class HelloApplication extends Application {
 
     private Scene scene;
     private Menu menuInicio;
     private MenuItem mit;
-
+    private Stack<Scene> historialVentanas = new Stack<>();
     public void start(Stage stage) throws IOException {
 
         connectToDB();
-        Restaurante restaurante = new Restaurante();
-
+        stage.setTitle("Restaurante");
+        stage.setFullScreen(true);
+        historialVentanas.push(scene);
+        new Restaurante(stage, historial);
+        //stage.show();
         /*
         scene = new Scene(borderPane, 500, 500);
         scene.getStylesheets()

@@ -1,5 +1,7 @@
 package com.example.restaurante.vistas;
 
+import com.example.restaurante.utils.FileComponent;
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,41 +22,47 @@ public class Restaurante extends Stage {
     private BorderPane borderPane;
     private VBox vBoxMenu;
     private HBox hBoxMenu;
-    private Button btnBebidas;
-    private String[] categorias = {"exit.jpeg","img1.jpeg","img2.jpeg","img3.jpeg", "img4.jpg", "img5.jpg"};
-    private String[] lblcategorias = {"Salir","Bebidas","Tacos","Especialidades", "Botanas", "Hamburguesas"};
+    private Button btnCategorias;
+    private String[] categorias = {"img1.jpeg","img2.jpeg","img3.jpeg", "img4.jpg", "img5.jpg"};
+    private String[] lblcategorias = {"Bebidas","Tacos","Especialidades", "Botanas", "Hamburguesas"};
 
     private Button[][] arBtnTablilla;
-
-    public Restaurante() {
-    CrearUI();
+    private FileComponent fileComponent = new FileComponent();
+    private Stack<Scene> =
+    public Restaurante(Stage stagePadre) {
+    CrearUI(stagePadre);
     scene = new Scene(borderPane);
-    this.setTitle("Restaurante");
+    /*
+    * this.setTitle("Restaurante");
     this.setScene(scene);
     this.setFullScreen(true);
-    this.show();
+    * */
+    stagePadre.setScene(scene);
+    stagePadre.show();
     }
 
 
-    private void CrearUI(){
+    private void CrearUI(Stage stagePadre){
         borderPane = new BorderPane();
         hBoxMenu = new HBox();
-
+        hBoxMenu.getChildren().add(fileComponent.getExitButton());
         int i = 0;
         for(String img: categorias){
-            Image imgCategorias = new Image(new File("src/main/java/com/example/restaurante/imagenes/"+img).toURI().toString());
-            ImageView imv = new ImageView(imgCategorias);
+            ImageView imv = fileComponent.getImageView(img);
             imv.setFitHeight(200);
             imv.setFitWidth(200);
 
-            Label lblMenu = new Label(lblcategorias[i]);
-            btnBebidas = new Button();
-            btnBebidas.setGraphic(imv);
-            btnBebidas.setPrefSize(110, 110);
-            if (img.equals("exit.jpeg")) {
-                btnBebidas.setOnAction(actionEvent -> System.exit(0));
-            }
-            vBoxMenu = new VBox(btnBebidas,lblMenu);
+            Label lblNombre = new Label(lblcategorias[i]);
+            btnCategorias = new Button();
+            btnCategorias.setGraphic(imv);
+            btnCategorias.setPrefSize(110, 110);
+
+                int fi = i;
+            btnCategorias.setOnAction(actionEvent -> {
+                    new DetalleCategoria(stagePadre, lblcategorias[fi]);
+                });
+
+            vBoxMenu = new VBox(btnCategorias,lblNombre);
             vBoxMenu.setAlignment(Pos.CENTER);
             hBoxMenu.getChildren().add(vBoxMenu);
             i++;
