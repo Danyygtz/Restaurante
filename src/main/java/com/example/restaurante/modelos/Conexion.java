@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 public class Conexion {
     private static String server = "localhost";
     private static  String user = "topicos";
-    private static String pass = "1234567890";
+    private static String pass = "mysecret";
     private static String db = "restaurante";
     public static Connection conexion = null;
 

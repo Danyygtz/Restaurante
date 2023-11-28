@@ -7,16 +7,13 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
 
-public class Restaurante extends Stage {
-
-    private Scene scene;
+public class TemplateMainView extends Stage {
     private BorderPane borderPane;
     private VBox vBoxMenu;
     private HBox hBoxMenu;
@@ -26,13 +23,13 @@ public class Restaurante extends Stage {
 
     private Button[][] arBtnTablilla;
 
-    public Restaurante() {
-    CrearUI();
-    scene = new Scene(borderPane);
-    this.setTitle("Restaurante");
-    this.setScene(scene);
-    this.setFullScreen(true);
-    this.show();
+    public TemplateMainView(String title) {
+        CrearUI();
+        Scene scene = new Scene(borderPane);
+        this.setTitle(title);
+        this.setScene(scene);
+        this.setFullScreen(true);
+        this.show();
     }
 
 

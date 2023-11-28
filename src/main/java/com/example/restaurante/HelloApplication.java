@@ -19,17 +19,18 @@ public class HelloApplication extends Application {
     private Menu menuInicio;
     private MenuItem mit;
 
-
     public void start(Stage stage) throws IOException {
 
         connectToDB();
         Restaurante restaurante = new Restaurante();
 
-        /*scene = new Scene(borderPane, 500, 500);
+        /*
+        scene = new Scene(borderPane, 500, 500);
         scene.getStylesheets()
                         .add(getClass().getResource("/estilos/estilos.css").toExternalForm());
         stage.setScene(scene);
-        stage.show();*/
+        stage.show();
+        */
     }
 
     public void connectToDB(){
