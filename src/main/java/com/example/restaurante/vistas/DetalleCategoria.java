@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 public class DetalleCategoria extends Stage {
     private Stage stagePadre;
-    private Scene scene;
     private VBox vBoxMenu;
     private HBox hBoxMenu;
     private Button btnProducto;
