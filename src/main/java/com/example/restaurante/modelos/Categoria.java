@@ -2,10 +2,10 @@ package com.example.restaurante.modelos;
 
 public class Categoria {
     private Integer id;
-    private Integer category;
+    private String category;
     private String img;
 
-    public Categoria(Integer id, Integer category, String img) {
+    public Categoria(Integer id, String category, String img) {
         this.id = id;
         this.category = category;
         this.img = img;
@@ -19,7 +19,11 @@ public class Categoria {
         this.id = id;
     }
 
-    public void setCategory(Integer category) {
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
         this.category = category;
     }
 

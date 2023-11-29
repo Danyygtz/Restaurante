@@ -9,5 +9,6 @@ module com.example.restaurante {
     requires java.sql;
     requires mysql.connector.j;
     opens com.example.restaurante.modelos;
+    opens com.example.restaurante.controller;
 
 }

@@ -1,8 +1,11 @@
 package com.example.restaurante.vistas;
 
+import com.example.restaurante.controller.CategoriaController;
+import com.example.restaurante.modelos.Categoria;
 import com.example.restaurante.modelos.Ticket;
 import com.example.restaurante.utils.FileComponent;
 import com.example.restaurante.utils.TablaTicket;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -30,8 +33,7 @@ public class Restaurante extends Stage {
     private BorderPane borderPane;
     private VBox vBoxMenu;
     private Button btnCategorias;
-    private String[] categorias = {"img1.jpeg","img2.jpeg","img3.jpeg", "img4.jpg", "img5.jpg"};
-    private String[] lblcategorias = {"Bebidas","Tacos","Especialidades", "Botanas", "Hamburguesas"};
+    private CategoriaController cc = new CategoriaController();
     private final FileComponent fileComponent = new FileComponent();
     public Restaurante(Stage stagePadre) {
         Screen screen = Screen.getPrimary();
@@ -50,24 +52,26 @@ public class Restaurante extends Stage {
     }
 
     private void CrearUI(double width, double height){
+        ObservableList<Categoria> categorias = cc.getAllCategory();
         borderPane = new BorderPane();
         // Sección Izquierda para Imágenes
         GridPane gridPane = new GridPane();
-        // int w = (int) (width / 200.0);
-        // int h = (int) (height / 200.0);
-        int horizontal = categorias.length;
-        int vertical = 1;
+        int horizontal = (int) (width / 200.0);
+        int vertical = (int) (height / 200.0);
+        // int horizontal = categorias.size();
+        // int vertical = 1;
         gridPane.setHgap(horizontal);
         gridPane.setVgap(vertical);
         gridPane.add(fileComponent.getExitButton(),0,0);
         // 1280*720 minimo
         int elemento = 0;
-        for (int row = 0; row < vertical; row++) {
-            for (int col = 0; col < horizontal; col++, elemento++) {
+        for (int row = 0; row < vertical && elemento < categorias.size(); row++) {
+            for (int col = 0; col < horizontal && elemento < categorias.size(); col++, elemento++) {
                 if (row == 0 && col == 0) {
                     col++;
                 }
-                ImageView imv = fileComponent.getImageView(categorias[elemento]);
+                Categoria categoria = categorias.get(elemento);
+                ImageView imv = fileComponent.getImageView(categoria.getImg());
                 imv.setFitHeight(200);
                 imv.setFitWidth(200);
 
@@ -75,11 +79,10 @@ public class Restaurante extends Stage {
                 btnCategorias.setGraphic(imv);
                 btnCategorias.setPrefSize(110, 110);
 
-                Label lblNombre = new Label(lblcategorias[elemento]);
+                Label lblNombre = new Label(categoria.getCategory());
 
-                int fi = elemento;
                 btnCategorias.setOnAction(actionEvent -> {
-                    detalleCategoria.mostrar(stagePadre, lblcategorias[fi], gridPane);
+                    detalleCategoria.mostrar(stagePadre, categoria.getCategory(), gridPane);
                 });
 
                 vBoxMenu = new VBox(btnCategorias,lblNombre);

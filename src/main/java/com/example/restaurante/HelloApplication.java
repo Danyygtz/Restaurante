@@ -1,18 +1,14 @@
 package com.example.restaurante;
 
-import com.example.restaurante.modelos.Conexion;
+import com.example.restaurante.controller.Conexion;
 import com.example.restaurante.vistas.Restaurante;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Stack;
 
 public class HelloApplication extends Application {
 
@@ -22,7 +18,7 @@ public class HelloApplication extends Application {
     //private Stack<Scene> historialVentanas = new Stack<>();
     public void start(Stage stage) throws IOException {
 
-        // connectToDB();
+        connectToDB();
         //historialVentanas.push(scene);
         new Restaurante(stage);
         //stage.show();
