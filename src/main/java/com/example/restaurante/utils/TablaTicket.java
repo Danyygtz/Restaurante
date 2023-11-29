@@ -15,11 +15,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
+
 public class TablaTicket {
     public TableView<Item> tableView = new TableView<>();
+    public static final HashMap<Integer, ObservableList<Item>> dataProductos = new HashMap<>();
+    public static final ObservableList<Item> data = FXCollections.observableArrayList();
     public TablaTicket(double width, double height) {
-        ObservableList<Ticket> data = FXCollections.observableArrayList();
-
         // Definir las columnas
         TableColumn<Item, String> columnaString = new TableColumn<>("Comida");
         columnaString.setCellValueFactory(cellData -> cellData.getValue().getStringProperty());
@@ -43,9 +45,10 @@ public class TablaTicket {
         TextField campoFloat = new TextField();
 
         // Botones para agregar y quitar elementos
+
         Button botonAgregar = new Button("Agregar");
         botonAgregar.setOnAction(e -> {
-            Ticket newItem = new Ticket(
+            Item newItem = new Item(
                     campoString.getText(),
                     Integer.parseInt(campoInteger.getText()),
                     Float.parseFloat(campoFloat.getText())
@@ -62,15 +65,7 @@ public class TablaTicket {
             }
         });
 
-        HBox hbox = new HBox(10, campoString, campoInteger, campoFloat, botonAgregar, botonQuitar);
-        VBox vbox = new VBox(10, tableView, hbox);
-
-        /*
-        Scene scene = new Scene(vbox, 600, 400);
-        stagePadre.setScene(scene);
-        stagePadre.setTitle("Tabla de Clase");
-        stagePadre.show();
-        */
+        tableView.setItems(data);
     }
 
     private void limpiarCampos(TextField... campos) {
