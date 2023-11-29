@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -19,6 +20,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
 
         connectToDB();
+        stage.initStyle(StageStyle.UNDECORATED);
         //historialVentanas.push(scene);
         new Restaurante(stage);
         //stage.show();
