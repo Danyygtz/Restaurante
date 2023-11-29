@@ -3,26 +3,22 @@ package com.example.restaurante.vistas;
 import com.example.restaurante.modelos.FoodItem;
 import com.example.restaurante.utils.FileComponent;
 import com.example.restaurante.utils.TablaTicket;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class DetalleCategoria extends Stage {
     private Stage stagePadre;
@@ -102,7 +98,6 @@ public class DetalleCategoria extends Stage {
                                 product.getPrice()
                         );
                         TablaTicket.data.add(newItem);
-                        System.out.println(TablaTicket.dataProductos.size());
                         if (!TablaTicket.dataProductos.containsKey(product.getId())) {
                             ObservableList<TablaTicket.Item> cateProducto = FXCollections.observableArrayList();
                             cateProducto.add(newItem);
@@ -112,10 +107,8 @@ public class DetalleCategoria extends Stage {
                             TablaTicket.dataProductos.get(product.getId()).add(newItem);
                             System.out.println("Producto agregado");
                         }
-                        System.out.println(
-                                "LISTA\t" + product.getFood() + "\n" +
-                                 "Elementos en la lista" + TablaTicket.dataProductos.get(product.getId()).size() + "\n"
-                        );
+                        Double nuevo_valor = Double.parseDouble(Restaurante.lblCosto.getText()) + product.getPrice();
+                        Restaurante.lblCosto.setText(nuevo_valor+"");
                     } catch (Exception err) {
                         System.out.println(err.getMessage());
                     }
@@ -135,14 +128,11 @@ public class DetalleCategoria extends Stage {
                         c--;
                         contador.setText(c+"");
                         if (TablaTicket.dataProductos.containsKey(product.getId())) {
-                            System.out.println("Producto " + product.getFood() + "\n\t"+TablaTicket.dataProductos.get(product.getId()).size());
                             TablaTicket.data.remove(TablaTicket.dataProductos.get(product.getId()).remove(0));
                             System.out.println("Producto eliminado");
+                            Double nuevo_valor = Double.parseDouble(Restaurante.lblCosto.getText()) - product.getPrice();
+                            Restaurante.lblCosto.setText(nuevo_valor+"");
                         }
-                        System.out.println(
-                                "LISTA\t" + product.getFood() + "\n" +
-                                        "Elementos en la lista" + TablaTicket.dataProductos.get(product.getId()).size() + "\n"
-                        );
                     } catch (Exception err) {
                         System.out.println(err.getMessage());
                     }

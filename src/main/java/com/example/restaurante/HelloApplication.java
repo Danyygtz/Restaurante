@@ -22,7 +22,7 @@ public class HelloApplication extends Application {
     //private Stack<Scene> historialVentanas = new Stack<>();
     public void start(Stage stage) throws IOException {
 
-        connectToDB();
+        // connectToDB();
         //historialVentanas.push(scene);
         new Restaurante(stage);
         //stage.show();

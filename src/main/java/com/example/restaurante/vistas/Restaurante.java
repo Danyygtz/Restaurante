@@ -23,17 +23,15 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 public class Restaurante extends Stage {
-    final static ArrayList<Ticket> ticket = new ArrayList<>();
+    public static final Label lblCosto = new Label("0.00");
     private Scene scene;
     DetalleCategoria detalleCategoria = new DetalleCategoria();
     private Stage stagePadre;
     private BorderPane borderPane;
     private VBox vBoxMenu;
-    private HBox hBoxMenu;
     private Button btnCategorias;
     private String[] categorias = {"img1.jpeg","img2.jpeg","img3.jpeg", "img4.jpg", "img5.jpg"};
     private String[] lblcategorias = {"Bebidas","Tacos","Especialidades", "Botanas", "Hamburguesas"};
-    private Button[][] arBtnTablilla;
     private final FileComponent fileComponent = new FileComponent();
     public Restaurante(Stage stagePadre) {
         Screen screen = Screen.getPrimary();
@@ -53,7 +51,6 @@ public class Restaurante extends Stage {
 
     private void CrearUI(double width, double height){
         borderPane = new BorderPane();
-        hBoxMenu = new HBox();
         // Sección Izquierda para Imágenes
         GridPane gridPane = new GridPane();
         // int w = (int) (width / 200.0);
@@ -96,10 +93,20 @@ public class Restaurante extends Stage {
         borderPane.setLeft(gridPane);
 
         TablaTicket tablaTicket = new TablaTicket(width * .3, height);
+
+        Label lblMessage = new Label("TOTAL");
+        lblMessage.getStyleClass().add("texto-personalizado1");
+
+        lblCosto.getStyleClass().add("texto-personalizado1");
+        HBox hbox = new HBox(lblMessage, lblCosto);
+        hbox.getStyleClass().add("backgroundTotal");
+        hbox.setSpacing(width*.15);
+
         Button finalizar = new Button("FINALIZAR");
         finalizar.setPrefSize(width*.3, 60);
         finalizar.getStyleClass().add("boton-personalizado");
-        vBoxMenu = new VBox(tablaTicket.tableView, finalizar);
+
+        vBoxMenu = new VBox(tablaTicket.tableView, hbox ,finalizar);
         vBoxMenu.setPrefSize(width * .3,height);
 
         borderPane.setRight(vBoxMenu);

@@ -37,3 +37,14 @@ label:hover{
     -fx-text-fill: white;
     -fx-font-size: 16px;
 }
+
+.backgroundTotal {
+    -fx-background-color: #000000;
+    -fx-text-alignment: center;
+}
+
+.texto-personalizado1 {
+    -fx-padding: 10px;
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+}
