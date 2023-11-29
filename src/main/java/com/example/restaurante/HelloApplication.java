@@ -19,14 +19,12 @@ public class HelloApplication extends Application {
     private Scene scene;
     private Menu menuInicio;
     private MenuItem mit;
-    private Stack<Scene> historialVentanas = new Stack<>();
+    //private Stack<Scene> historialVentanas = new Stack<>();
     public void start(Stage stage) throws IOException {
 
         connectToDB();
-        stage.setTitle("Restaurante");
-        stage.setFullScreen(true);
-        historialVentanas.push(scene);
-        new Restaurante(stage, historial);
+        //historialVentanas.push(scene);
+        new Restaurante(stage);
         //stage.show();
         /*
         scene = new Scene(borderPane, 500, 500);
