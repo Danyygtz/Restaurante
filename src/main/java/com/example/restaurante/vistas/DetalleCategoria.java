@@ -1,5 +1,6 @@
 package com.example.restaurante.vistas;
 
+import com.example.restaurante.controller.FoodItemController;
 import com.example.restaurante.modelos.FoodItem;
 import com.example.restaurante.utils.FileComponent;
 import com.example.restaurante.utils.TablaTicket;
@@ -25,15 +26,17 @@ public class DetalleCategoria extends Stage {
     private VBox vBoxMenu;
     private HBox hBoxMenu;
     private Button btnProducto;
-    private ArrayList<FoodItem> productos = new ArrayList<>();
     GridPane gridPane;
     private FileComponent fileComponent = new FileComponent();
-
-    public void mostrar(Stage stagePadre, String title, GridPane gridPane) {
+    private FoodItemController foodItemController = new FoodItemController();
+    public void mostrar(Stage stagePadre, String title, GridPane gridPane, int idCategory) {
+        System.out.println(foodItemController.getAllFoodFromCategory(idCategory).size());
+        /*
         productos.add(new FoodItem(1, "Maruchan", 10.0f, "img1.jpeg", 1));
         productos.add(new FoodItem(2, "Pollo", 20.0f, "img2.jpeg", 2));
         productos.add(new FoodItem(3, "Langosta", 30.0f, "img3.jpeg", 3));
         productos.add(new FoodItem(4, "Tacos", 40.0f, "img4.jpeg", 4));
+        * */
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
         stagePadre.setX(bounds.getMinX());
@@ -43,13 +46,16 @@ public class DetalleCategoria extends Stage {
         this.stagePadre = stagePadre;
         this.gridPane = gridPane;
         this.gridPane.getChildren().clear();
-        CrearUI(1,2);
+        CrearUI(bounds.getWidth(), bounds.getHeight(), idCategory);
         stagePadre.setTitle(title);
     }
 
-    private void CrearUI(double width, double height){
-        int horizontal = productos.size();
-        int vertical = 1;
+    private void CrearUI(double width, double height, int idCategory){
+        ObservableList<FoodItem> foodItems = foodItemController.getAllFoodFromCategory(idCategory);
+        int horizontal = (int) (width / 200.0);
+        int vertical = (int) (height / 200.0);
+        // int horizontal = productos.size();
+        // int vertical = 1;
         gridPane.setHgap(horizontal);
         gridPane.setVgap(vertical);
         VBox vBox = fileComponent.getReturnButton(stagePadre);
@@ -57,12 +63,12 @@ public class DetalleCategoria extends Stage {
         gridPane.getChildren().add(vBox);
         // 1280*720 minimo
         int elemento = 0;
-        for (int row = 0; row < vertical; row++) {
-            for (int col = 0; col < horizontal; col++, elemento++) {
+        for (int row = 0; row < vertical && elemento < foodItems.size(); row++) {
+            for (int col = 0; col < horizontal && elemento < foodItems.size(); col++, elemento++) {
                 if (row == 0 && col == 0) {
                     col++;
                 }
-                FoodItem product = productos.get(elemento);
+                FoodItem product = foodItems.get(elemento);
                 ImageView imv = fileComponent.getImageView(product.getImg());
                 imv.setFitHeight(200);
                 imv.setFitWidth(200);

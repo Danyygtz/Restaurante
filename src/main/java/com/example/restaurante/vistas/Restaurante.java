@@ -82,7 +82,7 @@ public class Restaurante extends Stage {
                 Label lblNombre = new Label(categoria.getCategory());
 
                 btnCategorias.setOnAction(actionEvent -> {
-                    detalleCategoria.mostrar(stagePadre, categoria.getCategory(), gridPane);
+                    detalleCategoria.mostrar(stagePadre, categoria.getCategory(), gridPane, categoria.getId());
                 });
 
                 vBoxMenu = new VBox(btnCategorias,lblNombre);
@@ -105,11 +105,11 @@ public class Restaurante extends Stage {
         hbox.getStyleClass().add("backgroundTotal");
         hbox.setSpacing(width*.15);
 
-        Button finalizar = new Button("FINALIZAR");
-        finalizar.setPrefSize(width*.3, 60);
-        finalizar.getStyleClass().add("boton-personalizado");
+        Button pagar = new Button("PAGAR");
+        pagar.setPrefSize(width*.3, 60);
+        pagar.getStyleClass().add("boton-personalizado");
 
-        vBoxMenu = new VBox(tablaTicket.tableView, hbox ,finalizar);
+        vBoxMenu = new VBox(tablaTicket.tableView, hbox ,pagar);
         vBoxMenu.setPrefSize(width * .3,height);
 
         borderPane.setRight(vBoxMenu);
