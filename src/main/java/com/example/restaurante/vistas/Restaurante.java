@@ -1,5 +1,6 @@
 package com.example.restaurante.vistas;
 
+import com.example.restaurante.modelos.Ticket;
 import com.example.restaurante.utils.FileComponent;
 import com.example.restaurante.utils.TablaTicket;
 import javafx.event.ActionEvent;
@@ -18,10 +19,11 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class Restaurante extends Stage {
-
+    final static ArrayList<Ticket> ticket = new ArrayList<>();
     private Scene scene;
     DetalleCategoria detalleCategoria = new DetalleCategoria();
     private Stage stagePadre;
@@ -33,7 +35,6 @@ public class Restaurante extends Stage {
     private String[] lblcategorias = {"Bebidas","Tacos","Especialidades", "Botanas", "Hamburguesas"};
     private Button[][] arBtnTablilla;
     private final FileComponent fileComponent = new FileComponent();
-    private Stack<Scene> historialVentanas = new Stack<>();
     public Restaurante(Stage stagePadre) {
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
@@ -44,7 +45,7 @@ public class Restaurante extends Stage {
         this.stagePadre = stagePadre;
         CrearUI(bounds.getWidth(), bounds.getHeight());
         scene = new Scene(borderPane);
-        historialVentanas.push(scene);
+        scene.getStylesheets().add(getClass().getResource("/estilos/estilos.css").toExternalForm());
         stagePadre.setTitle("Restaurante");
         stagePadre.setScene(scene);
         stagePadre.show();
@@ -81,7 +82,7 @@ public class Restaurante extends Stage {
 
                 int fi = elemento;
                 btnCategorias.setOnAction(actionEvent -> {
-                    detalleCategoria.mostrar(stagePadre, lblcategorias[fi], historialVentanas, gridPane);
+                    detalleCategoria.mostrar(stagePadre, lblcategorias[fi], gridPane);
                 });
 
                 vBoxMenu = new VBox(btnCategorias,lblNombre);
@@ -93,9 +94,14 @@ public class Restaurante extends Stage {
         }
 
         borderPane.setLeft(gridPane);
+
         TablaTicket tablaTicket = new TablaTicket(width * .3, height);
-        vBoxMenu = new VBox(new VBox(tablaTicket.tableView));
+        Button finalizar = new Button("FINALIZAR");
+        finalizar.setPrefSize(width*.3, 60);
+        finalizar.getStyleClass().add("boton-personalizado");
+        vBoxMenu = new VBox(tablaTicket.tableView, finalizar);
         vBoxMenu.setPrefSize(width * .3,height);
+
         borderPane.setRight(vBoxMenu);
         borderPane.setMaxHeight(height);
     }

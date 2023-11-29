@@ -30,3 +30,10 @@ label:hover{
     -fx-background-color: #000;
     -fx-font-weight: bold;
 }
+
+/* ESTILOS GLOBALES */
+.boton-personalizado {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
