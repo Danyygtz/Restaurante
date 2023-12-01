@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Images ###
+src/main/java/com/example/restaurante/imagenes/
