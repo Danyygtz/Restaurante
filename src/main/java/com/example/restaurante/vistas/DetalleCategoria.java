@@ -54,13 +54,14 @@ public class DetalleCategoria extends Stage {
         ObservableList<FoodItem> foodItems = foodItemController.getAllFoodFromCategory(idCategory);
         int horizontal = (int) (width / 200.0);
         int vertical = (int) (height / 200.0);
-        // int horizontal = productos.size();
-        // int vertical = 1;
+
         gridPane.setHgap(horizontal);
         gridPane.setVgap(vertical);
+
         VBox vBox = fileComponent.getReturnButton(stagePadre);
         GridPane.setConstraints(vBox, 0, 0);
         gridPane.getChildren().add(vBox);
+
         // 1280*720 minimo
         int elemento = 0;
         for (int row = 0; row < vertical && elemento < foodItems.size(); row++) {

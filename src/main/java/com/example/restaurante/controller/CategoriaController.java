@@ -16,6 +16,23 @@ public class CategoriaController {
 
     }
 
+    public boolean deleteCategoryByID(int id) {
+        Connection conexion = Conexion.getConnection();
+        // Consulta SQL
+        String consulta = "Delete from categories where id=?";
+        try {
+            assert conexion != null;
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                statement.setInt(1, id);
+                // Ejecutar la consulta
+                return statement.execute();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
     public ObservableList<Categoria> getAllCategory() {
         categorias.clear();
         Connection conexion = Conexion.getConnection();

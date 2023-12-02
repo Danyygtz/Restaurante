@@ -66,13 +66,19 @@ public class Restaurante extends Stage {
         // int vertical = 1;
         gridPane.setHgap(horizontal);
         gridPane.setVgap(vertical);
+
         gridPane.add(fileComponent.getExitButton(),0,0);
+
+        gridPane.add(fileComponent.crudProductos(stagePadre),1,0);
+
+        gridPane.add(fileComponent.crudCategorias(stagePadre, gridPane, borderPane),2,0);
+
         // 1280*720 minimo
         int elemento = 0;
         for (int row = 0; row < vertical && elemento < categorias.size(); row++) {
             for (int col = 0; col < horizontal && elemento < categorias.size(); col++, elemento++) {
                 if (row == 0 && col == 0) {
-                    col++;
+                    col = 3;
                 }
                 Categoria categoria = categorias.get(elemento);
                 ImageView imv = fileComponent.getImageView(categoria.getImg());

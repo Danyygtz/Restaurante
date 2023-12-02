@@ -19,14 +19,14 @@ public class FoodItemController {
         foodItems.clear();
         Connection conexion = Conexion.getConnection();
         // Consulta SQL
-        String consulta = "SELECT id, food, price, img FROM food_items";
+        String consulta = "SELECT id, food, price, img, id_category FROM food_items";
 
         // Preparar la declaración SQL con un parámetro
         try {
             assert conexion != null;
             try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
                 // Ejecutar la consulta
-                duplicated(statement);
+                executeQuery(statement);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -45,7 +45,7 @@ public class FoodItemController {
             try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
                 statement.setInt(1, id_category);
                 // Ejecutar la consulta
-                duplicated(statement);
+                executeQuery(statement);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,7 +53,23 @@ public class FoodItemController {
         return foodItems;
     }
 
-    private void duplicated(PreparedStatement statement) throws SQLException {
+    public boolean deleteFoodItemByID(int id) {
+        Connection conexion = Conexion.getConnection();
+        // Consulta SQL
+        String consulta = "Delete from food_items where id=?";
+        try {
+            assert conexion != null;
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                statement.setInt(1, id);
+                return statement.execute();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    private void executeQuery(PreparedStatement statement) throws SQLException {
         try (ResultSet resultSet = statement.executeQuery()) {
             // Verificar si se encontraron resultados
             while (resultSet.next()) {
