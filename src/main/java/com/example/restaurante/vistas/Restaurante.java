@@ -119,9 +119,9 @@ public class Restaurante extends Stage {
         pagar.setOnAction(e -> {
             if (mostrarDialogoDeConfirmacion()) {
                 // Aquí puedes realizar la operación
-                mostrarMensaje("Operación realizada con éxito.");
+                FileComponent.mostrarMensaje("Operación realizada con éxito.");
             } else {
-                mostrarMensaje("Operación cancelada.");
+                FileComponent.mostrarMensaje("Operación cancelada.");
             }
         });
         pagar.setPrefSize(width*.3, 60);
@@ -155,13 +155,4 @@ public class Restaurante extends Stage {
         return resultado.isPresent() && resultado.get() == botonSi;
     }
 
-    private void mostrarMensaje(String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.initStyle(StageStyle.UNDECORATED);
-        alert.setResizable(false);
-        alert.setTitle("Información");
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
-    }
 }

@@ -1,5 +1,5 @@
 .root{
-    -fx-background-color: white;
+    -fx-background-color: #E1D3D0;
     -fx-background-repeat: no-repeat,no-repeat;
     -fx-background-size: 110%, 180px;
     -fx-background-position: center,top;
@@ -47,4 +47,16 @@ label:hover{
     -fx-padding: 10px;
     -fx-font-size: 16px;
     -fx-text-fill: white;
+}
+
+.campo-texto {
+    -fx-font-size: 30px;
+    -fx-padding: 10px;
+}
+
+/* Border */
+.borde-bloque{
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
 }

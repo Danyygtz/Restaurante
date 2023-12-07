@@ -16,6 +16,23 @@ public class CategoriaController {
 
     }
 
+    public boolean createCategory(String category, String img) {
+        Connection conexion = Conexion.getConnection();
+        // Consulta SQL
+        String consulta = "insert into categories (category, img) values (?, ?)";
+        try {
+            assert conexion != null;
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                statement.setString(1, category);
+                statement.setString(2, img);
+                return statement.execute();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
     public boolean deleteCategoryByID(int id) {
         Connection conexion = Conexion.getConnection();
         // Consulta SQL

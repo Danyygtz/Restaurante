@@ -31,12 +31,6 @@ public class DetalleCategoria extends Stage {
     private FoodItemController foodItemController = new FoodItemController();
     public void mostrar(Stage stagePadre, String title, GridPane gridPane, int idCategory) {
         System.out.println(foodItemController.getAllFoodFromCategory(idCategory).size());
-        /*
-        productos.add(new FoodItem(1, "Maruchan", 10.0f, "img1.jpeg", 1));
-        productos.add(new FoodItem(2, "Pollo", 20.0f, "img2.jpeg", 2));
-        productos.add(new FoodItem(3, "Langosta", 30.0f, "img3.jpeg", 3));
-        productos.add(new FoodItem(4, "Tacos", 40.0f, "img4.jpeg", 4));
-        * */
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
         stagePadre.setX(bounds.getMinX());

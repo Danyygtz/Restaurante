@@ -4,20 +4,29 @@ import com.example.restaurante.controller.CategoriaController;
 import com.example.restaurante.modelos.Categoria;
 import com.example.restaurante.utils.FileComponent;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
+
 public class AdminCategorias extends Stage {
+    private Image imagen;
+    private String pathImage = "";
+    private ImageView imageView = new ImageView();
+    private final Label labelMessage = new Label();
     private final Stage stagePadre;
     private final GridPane gridPane;
     private final BorderPane borderPane;
@@ -85,6 +94,7 @@ public class AdminCategorias extends Stage {
                 btnEditar.setGraphic(imv);
                 btnEditar.setOnAction(e -> {
                     System.out.println("Editando el producto");
+                    abrirDialog(stagePadre, categoria.getCategory(), categoria.getImg());
                 });
 
                 HBox hbox = new HBox(btnEditar, btnEliminar);
@@ -102,9 +112,141 @@ public class AdminCategorias extends Stage {
         // creando bottom
 
         HBox hbox = new HBox();
-        TextField category = new TextField("category");
-        hbox.getChildren().add(category);
-        borderPane.setBottom(hbox);
+        hbox.setAlignment(Pos.CENTER_LEFT);
+        if (height < 1000) {
+            hbox.setPrefSize(width*.6, 100);
+        } else {
+            hbox.setPrefSize(width*.6, height*.1);
+        }
+        hbox.setPadding(new Insets(30));
+        hbox.setSpacing(40);
 
+        Label lbl = new Label("Categoria");
+        lbl.getStyleClass().add("campo-texto");
+
+        VBox vbox = new VBox();
+        vbox.setSpacing(12);
+
+        TextField category = new TextField();
+        category.getStyleClass().add("campo-texto");
+        //vbox.getChildren().addAll(lbl, category);
+        //hbox.getChildren().add(vbox);
+        hbox.getChildren().addAll(lbl, category);
+
+        lbl = new Label("Imagen");
+        lbl.getStyleClass().add("campo-texto");
+
+        Button btnCargar = new Button("CARGAR IMAGEN");
+        btnCargar.getStyleClass().add("campo-texto");
+        btnCargar.setOnAction(e -> {
+            pathImage = fileComponent.cargarImagen(stagePadre);
+            imageView.setImage(fileComponent.getImage(pathImage));
+            imageView.setFitWidth(50);
+            imageView.setFitHeight(50);
+            labelMessage.setText(FileComponent.obtenerNombreArchivo(pathImage));
+        });
+
+        vbox = new VBox(lbl, labelMessage,imageView, btnCargar);
+        vbox.setSpacing(12);
+
+        //hbox.getChildren().add(vbox);
+        hbox.getChildren().addAll(lbl, labelMessage, imageView, btnCargar);
+
+        Button btnCrear = new Button("CREAR CATEGORIA");
+        btnCrear.getStyleClass().add("campo-texto");
+        btnCrear.setOnAction(e -> {
+            if (category.getText().isBlank() || labelMessage.getText().isBlank()) {
+                FileComponent.mostrarMensaje("NO SE PUEDE AGREGAR EL PRODUCTO, VUELVA A INTENTAR...");
+            } else {
+                try {
+                    categoriaController.createCategory(category.getText(), labelMessage.getText());
+                    fileComponent.subirImagen(pathImage, labelMessage.getText());
+                    System.out.println("Categoria creada");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
+        vbox = new VBox(btnCrear);
+        vbox.setAlignment(Pos.CENTER);
+        //hbox.getChildren().add(vbox);
+        hbox.getChildren().add(btnCrear);
+        hbox.getStyleClass().add("borde-bloque");
+
+        borderPane.setBottom(hbox);
+    }
+
+    private void abrirDialog(Stage primaryStage, String cateNombre, String cateImg) {
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+        AtomicReference<String> imgFile = new AtomicReference<>("");
+
+        // Calcular las coordenadas para centrar el diálogo en la ventana principal
+        double centerX = bounds.getMinX() + bounds.getWidth() / 2;
+        double centerY = bounds.getMinY() + bounds.getHeight() / 2;
+
+        Dialog<String> dialog = new Dialog<>();
+        // Configurar las coordenadas del diálogo
+        dialog.setX(centerX - dialog.getWidth() / 2);
+        dialog.setY(centerY - dialog.getHeight() / 2);
+        dialog.setResizable(false);
+        dialog.setHeight(350);
+        dialog.setWidth(100);
+        dialog.setTitle("AGREGAR CATEGORIA");
+        ImageView cImage = fileComponent.getImageView(cateImg);
+        cImage.setFitWidth(50);
+        cImage.setFitHeight(50);
+
+        // Crear campos y controles del diálogo
+        GridPane grid = new GridPane();
+        TextField campoNombre = new TextField(cateNombre);
+        Button botonElegirImagen = new Button("Elegir Imagen");
+
+        grid.add(new Label("Nombre:"), 0, 0);
+        grid.add(campoNombre, 1, 0);
+        grid.add(botonElegirImagen, 1, 1);
+        grid.add(cImage, 1, 2);
+
+        // Configurar el diálogo
+        dialog.getDialogPane().setContent(grid);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        // Lógica para elegir una imagen
+        botonElegirImagen.setOnAction(e -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Seleccionar Imagen");
+            File selectedFile = fileChooser.showOpenDialog(primaryStage);
+
+            if (selectedFile != null) {
+                // Puedes realizar acciones adicionales con la ruta de la imagen
+                cImage.setImage(fileComponent.getImage(selectedFile.getAbsolutePath()));
+                cImage.setFitWidth(50);
+                cImage.setFitHeight(50);
+                imgFile.set(selectedFile.getName());
+            }
+        });
+
+        // Lógica para finalizar y procesar los datos
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                // Obtener datos ingresados
+                String nombre = campoNombre.getText();
+                // Puedes realizar acciones adicionales con los datos ingresados
+                if (nombre.isBlank() || nombre.isEmpty()) {
+                    return null;
+                }
+                return "ok";
+            }
+            return null;
+        });
+
+        // Mostrar el diálogo y esperar hasta que se cierre
+        dialog.showAndWait().ifPresent(resultado -> {
+            // Puedes realizar acciones adicionales con el resultado si es necesario
+            if (resultado.equals("ok")) {
+                categoriaController.createCategory(campoNombre.getText(), imgFile.get());
+            }
+        });
     }
 }
