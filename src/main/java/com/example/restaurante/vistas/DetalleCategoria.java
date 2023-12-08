@@ -95,7 +95,7 @@ public class DetalleCategoria extends Stage {
                         TablaTicket.Item newItem = new TablaTicket.Item(
                                 product.getFood(),
                                 product.getId(),
-                                product.getPrice()
+                                Float.parseFloat(""+product.getPrice())
                         );
                         TablaTicket.data.add(newItem);
                         if (!TablaTicket.dataProductos.containsKey(product.getId())) {

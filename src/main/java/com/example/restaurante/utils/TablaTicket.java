@@ -22,6 +22,9 @@ public class TablaTicket {
     public static final HashMap<Integer, ObservableList<Item>> dataProductos = new HashMap<>();
     public static final ObservableList<Item> data = FXCollections.observableArrayList();
     public TablaTicket(double width, double height) {
+        // Diseño
+        tableView.getStyleClass().add("backgroundTable");
+
         // Definir las columnas
         TableColumn<Item, String> columnaString = new TableColumn<>("Comida");
         columnaString.setCellValueFactory(cellData -> cellData.getValue().getStringProperty());

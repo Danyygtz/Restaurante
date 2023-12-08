@@ -2,19 +2,14 @@ package com.example.restaurante.vistas;
 
 import com.example.restaurante.controller.CategoriaController;
 import com.example.restaurante.modelos.Categoria;
-import com.example.restaurante.modelos.Ticket;
 import com.example.restaurante.utils.FileComponent;
 import com.example.restaurante.utils.TablaTicket;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -22,13 +17,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Stack;
-
 public class Restaurante extends Stage {
     public static final Label lblCosto = new Label("0.00");
     private Scene scene;
@@ -69,7 +57,7 @@ public class Restaurante extends Stage {
 
         gridPane.add(fileComponent.getExitButton(),0,0);
 
-        gridPane.add(fileComponent.crudProductos(stagePadre),1,0);
+        gridPane.add(fileComponent.crudProductos(stagePadre, gridPane, borderPane),1,0);
 
         gridPane.add(fileComponent.crudCategorias(stagePadre, gridPane, borderPane),2,0);
 
@@ -117,7 +105,7 @@ public class Restaurante extends Stage {
 
         Button pagar = new Button("PAGAR");
         pagar.setOnAction(e -> {
-            if (mostrarDialogoDeConfirmacion()) {
+            if (fileComponent.mostrarDialogoDeConfirmacion()) {
                 // Aquí puedes realizar la operación
                 FileComponent.mostrarMensaje("Operación realizada con éxito.");
             } else {
@@ -132,27 +120,6 @@ public class Restaurante extends Stage {
 
         borderPane.setRight(vBoxMenu);
         borderPane.setMaxHeight(height);
-    }
-
-    private boolean mostrarDialogoDeConfirmacion() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setResizable(false);
-        alert.initStyle(StageStyle.UNDECORATED);
-        alert.setTitle("Confirmar Operación");
-        alert.setHeaderText(null);
-        alert.setContentText("¿Desea realizar esta operación?");
-
-        // Configurar los botones del cuadro de diálogo
-        ButtonType botonSi = new ButtonType("Sí");
-        ButtonType botonNo = new ButtonType("No");
-        alert.getButtonTypes().setAll(botonSi, botonNo);
-
-        // Mostrar el cuadro de diálogo y esperar la respuesta
-
-        Optional<ButtonType> resultado = alert.showAndWait();
-
-        // Devolver true si el usuario elige "Sí", de lo contrario, false
-        return resultado.isPresent() && resultado.get() == botonSi;
     }
 
 }

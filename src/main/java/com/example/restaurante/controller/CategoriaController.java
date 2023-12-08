@@ -11,13 +11,12 @@ import java.sql.SQLException;
 
 public class CategoriaController {
     private ObservableList<Categoria> categorias = FXCollections.observableArrayList();
-
+    private Connection conexion = Conexion.getConnection();
     public CategoriaController() {
 
     }
 
     public boolean createCategory(String category, String img) {
-        Connection conexion = Conexion.getConnection();
         // Consulta SQL
         String consulta = "insert into categories (category, img) values (?, ?)";
         try {
@@ -33,8 +32,24 @@ public class CategoriaController {
         return false;
     }
 
+    public boolean updateCategory(Categoria categoria) {
+        // Consulta SQL
+        String consulta = "update categories set category=?, img=? where id=?";
+        try {
+            assert conexion != null;
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                statement.setString(1, categoria.getCategory());
+                statement.setString(2, categoria.getImg());
+                statement.setInt(3, categoria.getId());
+                return statement.executeUpdate() > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println("La consulta3");
+        }
+        return false;
+    }
+
     public boolean deleteCategoryByID(int id) {
-        Connection conexion = Conexion.getConnection();
         // Consulta SQL
         String consulta = "Delete from categories where id=?";
         try {
@@ -52,7 +67,6 @@ public class CategoriaController {
 
     public ObservableList<Categoria> getAllCategory() {
         categorias.clear();
-        Connection conexion = Conexion.getConnection();
         // Consulta SQL
         String consulta = "SELECT id, category, img FROM categories";
 
@@ -76,5 +90,62 @@ public class CategoriaController {
             e.printStackTrace();
         }
         return categorias;
+    }
+
+    public ObservableList<String> getAllCategoryName() {
+        categorias.clear();
+        ObservableList<String> names = FXCollections.observableArrayList();
+        // consulta SQL
+        String consulta = "Select category from categories";
+        try {
+            assert conexion != null;
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while(resultSet.next()) {
+                        names.add(resultSet.getString("category"));
+                    }
+                }
+            }
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return null;
+    }
+
+    public String getCategoryNameByID(int category) {
+        // Consulta SQL
+        String consulta = "select category from categories where id=?";
+        try {
+            assert conexion != null;
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                statement.setInt(1, category);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getString("category");
+                    }
+                }
+            }
+        } catch (SQLException sql) {
+            System.out.println(sql.getMessage());
+        }
+        return "";
+    }
+
+    public Integer getCategoryIDbyName(String category) {
+        String consulta = "select id from categories where category=?";
+        try {
+            assert conexion != null;
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                statement.setString(1, category);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt("id");
+                    }
+                }
+            }
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return -1;
     }
 }

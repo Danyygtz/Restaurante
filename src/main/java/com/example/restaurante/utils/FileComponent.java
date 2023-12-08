@@ -1,10 +1,12 @@
 package com.example.restaurante.utils;
 
 import com.example.restaurante.vistas.AdminCategorias;
+import com.example.restaurante.vistas.AdminProductos;
 import com.example.restaurante.vistas.Restaurante;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Optional;
 
 public class FileComponent {
     public ImageView getImageView(String img) {
@@ -46,7 +49,26 @@ public class FileComponent {
         vbox.setAlignment(Pos.CENTER);
         return vbox;
     }
+    public boolean mostrarDialogoDeConfirmacion() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setResizable(false);
+        alert.initStyle(StageStyle.UNDECORATED);
+        alert.setTitle("Confirmar Operación");
+        alert.setHeaderText(null);
+        alert.setContentText("¿Desea realizar esta operación?");
 
+        // Configurar los botones del cuadro de diálogo
+        ButtonType botonSi = new ButtonType("Sí");
+        ButtonType botonNo = new ButtonType("No");
+        alert.getButtonTypes().setAll(botonSi, botonNo);
+
+        // Mostrar el cuadro de diálogo y esperar la respuesta
+
+        Optional<ButtonType> resultado = alert.showAndWait();
+
+        // Devolver true si el usuario elige "Sí", de lo contrario, false
+        return resultado.isPresent() && resultado.get() == botonSi;
+    }
     public VBox getReturnButton(Stage stagePadre) {
         ImageView exit = getImageView("exit.jpeg");
         exit.setFitHeight(240);
@@ -66,7 +88,7 @@ public class FileComponent {
         return vbox;
     }
 
-    public VBox crudProductos(Stage stagePadre) {
+    public VBox crudProductos(Stage stagePadre, GridPane gridPane, BorderPane borderPane) {
         ImageView exit = getImageView("exit.jpeg");
         exit.setFitHeight(200);
         exit.setFitWidth(200);
@@ -74,7 +96,7 @@ public class FileComponent {
         Button btn = new Button();
         btn.setGraphic(exit);
         btn.setPrefSize(110, 110);
-        btn.setOnAction(actionEvent -> System.exit(0));
+        btn.setOnAction(actionEvent -> new AdminProductos(stagePadre, gridPane, borderPane));
         Label lblNombre = new Label("CRUD PRODUCTOS");
         VBox vbox = new VBox(btn, lblNombre);
         vbox.setAlignment(Pos.CENTER);

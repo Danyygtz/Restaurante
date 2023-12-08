@@ -8,7 +8,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -23,8 +22,10 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AdminCategorias extends Stage {
-    private Image imagen;
+    private Categoria categoriaTemp;
     private String pathImage = "";
+    private int row = 0;
+    private int col = 0;
     private ImageView imageView = new ImageView();
     private final Label labelMessage = new Label();
     private final Stage stagePadre;
@@ -48,6 +49,52 @@ public class AdminCategorias extends Stage {
         stagePadre.setTitle("Categorias");
     }
 
+    private void crearTarjeta(Categoria categoria) {
+        ImageView imv = fileComponent.getImageView(categoria.getImg());
+        imv.setFitHeight(200);
+        imv.setFitWidth(200);
+
+        Button btn = new Button();
+        btn.setGraphic(imv);
+        btn.setPrefSize(110, 110);
+
+        Label lblNombre = new Label(categoria.getCategory());
+
+        Button btnEliminar = new Button();
+        imv = fileComponent.getImageView("eliminar.png");
+        imv.setFitHeight(30);
+        imv.setFitWidth(60);
+        btnEliminar.setGraphic(imv);
+        btnEliminar.setOnAction(e -> {
+            System.out.println("Eliminado el archivo");
+            if(fileComponent.mostrarDialogoDeConfirmacion()) {
+                categoriaController.deleteCategoryByID(categoria.getId());
+                new AdminCategorias(stagePadre, gridPane, borderPane);
+            }
+        });
+
+        Button btnEditar = new Button();
+        imv = fileComponent.getImageView("editar.png");
+        imv.setFitHeight(30);
+        imv.setFitWidth(60);
+        btnEditar.setGraphic(imv);
+        btnEditar.setOnAction(e -> {
+            System.out.println("Editando el producto");
+            abrirDialog(stagePadre, categoria.getCategory(), categoria.getImg());
+            new AdminCategorias(stagePadre, gridPane, borderPane);
+        });
+
+        HBox hbox = new HBox(btnEditar, btnEliminar);
+
+        hbox.setAlignment(Pos.CENTER);
+        hbox.setSpacing(20);
+
+        VBox vbox = new VBox(btn,lblNombre, hbox);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPrefSize(250,250);
+        gridPane.add(vbox, col, row);
+    }
+
     private void crearUI(double width, double height) {
         ObservableList<Categoria> foodItems = categoriaController.getAllCategory();
         int horizontal = (int) (width / 200);
@@ -61,51 +108,13 @@ public class AdminCategorias extends Stage {
         gridPane.getChildren().add(vBox);
 
         int elemento = 0;
-        for (int row = 0; row < vertical && elemento < foodItems.size(); row++) {
-            for (int col = 0; col < horizontal && elemento < foodItems.size(); col++, elemento++) {
+        for (row = 0; row < vertical && elemento < foodItems.size(); row++) {
+            for (col = 0; col < horizontal && elemento < foodItems.size(); col++, elemento++) {
                 if (row == 0 && col == 0) {
                     col ++;
                 }
-                Categoria categoria = foodItems.get(elemento);
-                ImageView imv = fileComponent.getImageView(categoria.getImg());
-                imv.setFitHeight(200);
-                imv.setFitWidth(200);
-
-                Button btn = new Button();
-                btn.setGraphic(imv);
-                btn.setPrefSize(110, 110);
-
-                Label lblNombre = new Label(categoria.getCategory());
-
-                Button btnEliminar = new Button();
-                imv = fileComponent.getImageView("eliminar.png");
-                imv.setFitHeight(16);
-                imv.setFitWidth(16);
-                btnEliminar.setGraphic(imv);
-                btnEliminar.setOnAction(e -> {
-                    System.out.println("Eliminado el archivo");
-                    categoriaController.deleteCategoryByID(categoria.getId());
-                });
-
-                Button btnEditar = new Button();
-                imv = fileComponent.getImageView("editar.png");
-                imv.setFitHeight(16);
-                imv.setFitWidth(16);
-                btnEditar.setGraphic(imv);
-                btnEditar.setOnAction(e -> {
-                    System.out.println("Editando el producto");
-                    abrirDialog(stagePadre, categoria.getCategory(), categoria.getImg());
-                });
-
-                HBox hbox = new HBox(btnEditar, btnEliminar);
-
-                hbox.setAlignment(Pos.CENTER);
-                hbox.setSpacing(20);
-
-                VBox vbox = new VBox(btn,lblNombre, hbox);
-                vbox.setAlignment(Pos.CENTER);
-                vbox.setPrefSize(250,250);
-                gridPane.add(vbox, col, row);
+                this.categoriaTemp = foodItems.get(elemento);
+                crearTarjeta(categoriaTemp);
             }
         }
 
@@ -149,7 +158,7 @@ public class AdminCategorias extends Stage {
         vbox = new VBox(lbl, labelMessage,imageView, btnCargar);
         vbox.setSpacing(12);
 
-        //hbox.getChildren().add(vbox);
+        // hbox.getChildren().add(vbox);
         hbox.getChildren().addAll(lbl, labelMessage, imageView, btnCargar);
 
         Button btnCrear = new Button("CREAR CATEGORIA");
@@ -157,11 +166,12 @@ public class AdminCategorias extends Stage {
         btnCrear.setOnAction(e -> {
             if (category.getText().isBlank() || labelMessage.getText().isBlank()) {
                 FileComponent.mostrarMensaje("NO SE PUEDE AGREGAR EL PRODUCTO, VUELVA A INTENTAR...");
-            } else {
+            } else if (fileComponent.mostrarDialogoDeConfirmacion()){
                 try {
                     categoriaController.createCategory(category.getText(), labelMessage.getText());
                     fileComponent.subirImagen(pathImage, labelMessage.getText());
                     System.out.println("Categoria creada");
+                    new AdminCategorias(stagePadre, gridPane, borderPane);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -224,6 +234,7 @@ public class AdminCategorias extends Stage {
                 cImage.setFitWidth(50);
                 cImage.setFitHeight(50);
                 imgFile.set(selectedFile.getName());
+                this.categoriaTemp.setImg(selectedFile.getName());
             }
         });
 
@@ -232,6 +243,8 @@ public class AdminCategorias extends Stage {
             if (dialogButton == ButtonType.OK) {
                 // Obtener datos ingresados
                 String nombre = campoNombre.getText();
+                this.categoriaTemp.setCategory(campoNombre.getText());
+
                 // Puedes realizar acciones adicionales con los datos ingresados
                 if (nombre.isBlank() || nombre.isEmpty()) {
                     return null;
@@ -245,7 +258,7 @@ public class AdminCategorias extends Stage {
         dialog.showAndWait().ifPresent(resultado -> {
             // Puedes realizar acciones adicionales con el resultado si es necesario
             if (resultado.equals("ok")) {
-                categoriaController.createCategory(campoNombre.getText(), imgFile.get());
+                categoriaController.updateCategory(this.categoriaTemp);
             }
         });
     }

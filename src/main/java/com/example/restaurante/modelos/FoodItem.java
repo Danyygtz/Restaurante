@@ -5,11 +5,18 @@ import java.util.ArrayList;
 public class FoodItem {
     private Integer id;
     private String food;
-    private float price;
+    private Double price;
     private String img;
     private Integer categoria;
 
-    public FoodItem(Integer id, String food, float price, String img, Integer categoria) {
+    public FoodItem(String food, Double price, String img, Integer categoria) {
+        this.food = food;
+        this.price = price;
+        this.img = img;
+        this.categoria = categoria;
+    }
+
+    public FoodItem(Integer id, String food, Double price, String img, Integer categoria) {
         this.id = id;
         this.food = food;
         this.price = price;
@@ -33,11 +40,11 @@ public class FoodItem {
         this.food = food;
     }
 
-    public float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
