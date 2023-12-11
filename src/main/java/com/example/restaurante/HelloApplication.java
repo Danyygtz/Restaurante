@@ -12,12 +12,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 
 public class HelloApplication extends Application {
-
-    private Scene scene;
-    private Menu menuInicio;
-    private MenuItem mit;
-    //private Stack<Scene> historialVentanas = new Stack<>();
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
 
         connectToDB();
         stage.initStyle(StageStyle.UNDECORATED);

@@ -86,6 +86,7 @@ public class DetalleCategoria extends Stage {
                 imv = fileComponent.getImageView("mas.png");
                 imv.setFitHeight(30);
                 imv.setFitWidth(60);
+
                 btnMas.setGraphic(imv);
                 btnMas.setOnAction(actionEvent -> {
                     try {

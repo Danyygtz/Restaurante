@@ -80,7 +80,7 @@ public class AdminCategorias extends Stage {
         btnEditar.setGraphic(imv);
         btnEditar.setOnAction(e -> {
             System.out.println("Editando el producto");
-            abrirDialog(stagePadre, categoria.getCategory(), categoria.getImg());
+            abrirDialog(stagePadre, categoria.getCategory(), categoria.getImg(), categoria.getId());
             new AdminCategorias(stagePadre, gridPane, borderPane);
         });
 
@@ -187,7 +187,8 @@ public class AdminCategorias extends Stage {
         borderPane.setBottom(hbox);
     }
 
-    private void abrirDialog(Stage primaryStage, String cateNombre, String cateImg) {
+    private void abrirDialog(Stage primaryStage, String cateNombre, String cateImg, Integer id) {
+
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
         AtomicReference<String> imgFile = new AtomicReference<>("");
@@ -204,6 +205,7 @@ public class AdminCategorias extends Stage {
         dialog.setHeight(350);
         dialog.setWidth(100);
         dialog.setTitle("AGREGAR CATEGORIA");
+        categoriaTemp.setImg(cateImg);
         ImageView cImage = fileComponent.getImageView(cateImg);
         cImage.setFitWidth(50);
         cImage.setFitHeight(50);
@@ -244,7 +246,7 @@ public class AdminCategorias extends Stage {
                 // Obtener datos ingresados
                 String nombre = campoNombre.getText();
                 this.categoriaTemp.setCategory(campoNombre.getText());
-
+                this.categoriaTemp.setId(id);
                 // Puedes realizar acciones adicionales con los datos ingresados
                 if (nombre.isBlank() || nombre.isEmpty()) {
                     return null;
@@ -258,7 +260,13 @@ public class AdminCategorias extends Stage {
         dialog.showAndWait().ifPresent(resultado -> {
             // Puedes realizar acciones adicionales con el resultado si es necesario
             if (resultado.equals("ok")) {
+                System.out.println("DATOS DE SALIDA");
+                System.out.println(categoriaTemp.getImg());
+                System.out.println(categoriaTemp.getCategory());
+                System.out.println(categoriaTemp.getId());
+                System.out.println("===============");
                 categoriaController.updateCategory(this.categoriaTemp);
+                new AdminCategorias(stagePadre, gridPane, borderPane);
             }
         });
     }

@@ -87,7 +87,12 @@ public class AdminProductos extends Stage {
         btnEditar.setOnAction(e -> {
             System.out.println("Editando el producto");
             try {
-                abrirDialog(stagePadre, producto.getFood(), producto.getImg(), producto.getPrice(), categoriaController.getCategoryNameByID(producto.getCategoria()));
+                System.out.println("IDIDIDIDIDIDI");
+                System.out.println(producto.getFood());
+                System.out.println(producto.getId());
+                System.out.println("IDIDIDIDIDIDI");
+                this.itemTemp.setImg(producto.getImg());
+                abrirDialog(stagePadre, producto.getFood(), producto.getImg(), producto.getPrice(), categoriaController.getCategoryNameByID(producto.getCategoria()), producto.getId());
                 new AdminProductos(stagePadre, gridPane, borderPane);
             } catch (Exception err) {
                 System.out.println(err.getMessage());
@@ -194,7 +199,7 @@ public class AdminProductos extends Stage {
                 try {
                     Double p = Double.parseDouble(precio.getText());
                     Integer idCategoria = categoriaController.getCategoryIDbyName(categoriasBox.getSelectionModel().getSelectedItem());
-                    foodItemController.createFoodItem(new FoodItem(itemField.getText(), p, labelMessage.getText(), idCategoria));
+                    foodItemController.createFoodItem(new FoodItem(itemField.getText(), p, labelMessage.getText(),  idCategoria));
                     fileComponent.subirImagen(pathImage, labelMessage.getText());
                     System.out.println("PRODUCTO creado");
                     new AdminProductos(stagePadre, gridPane, borderPane);
@@ -210,7 +215,8 @@ public class AdminProductos extends Stage {
         borderPane.setBottom(hbox);
     }
 
-    private void abrirDialog(Stage primaryStage, String cateNombre, String cateImg, Double catePrecio, String categoria) {
+    private void abrirDialog(Stage primaryStage, String cateNombre, String cateImg, Double catePrecio, String categoria, Integer id) {
+        System.out.println(id);
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
         AtomicReference<String> imgFile = new AtomicReference<>("");
@@ -276,6 +282,7 @@ public class AdminProductos extends Stage {
                 this.itemTemp.setFood(campoNombre.getText());
                 this.itemTemp.setPrice(p);
                 this.itemTemp.setCategoria(categoriaController.getCategoryIDbyName(categoriasBox.getSelectionModel().getSelectedItem()));
+                this.itemTemp.setId(id);
                 // Puedes realizar acciones adicionales con los datos ingresados
                 if (itemTemp.getFood().isBlank() || itemTemp.getImg().isBlank()) {
                     return null;
@@ -295,6 +302,7 @@ public class AdminProductos extends Stage {
                 System.out.println(itemTemp.getId());
                 System.out.println(itemTemp.getCategoria());
                 System.out.println(itemTemp.getFood());
+                System.out.println("===============");
                 foodItemController.updateFoodItem(this.itemTemp, categoriasBox.getSelectionModel().getSelectedItem());
                 new AdminProductos(stagePadre, gridPane, borderPane);
             }

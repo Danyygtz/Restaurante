@@ -109,6 +109,7 @@ public class FoodItemController {
             while (resultSet.next()) {
                 // Crear una instancia de Persona con los resultados
                 int id = resultSet.getInt("id");
+                System.out.println("ID FROM DATABASE"+id);
                 String foodName = resultSet.getString("food");
                 Double price = resultSet.getDouble("price");
                 String img = resultSet.getString("img");
