@@ -156,7 +156,7 @@ public class FileComponent {
         Files.copy(Paths.get(img), Path.of("src/main/java/com/example/restaurante/imagenes/").resolve(nombre) , StandardCopyOption.REPLACE_EXISTING);
     }
 
-    private static void abrirTecladoVirtual() {
+    public static void abrirTecladoVirtual() {
         String osName = System.getProperty("os.name").toLowerCase();
 
         try {

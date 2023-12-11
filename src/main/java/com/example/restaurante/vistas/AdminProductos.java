@@ -112,6 +112,7 @@ public class AdminProductos extends Stage {
 
     private void crearUI(double width, double height) {
         ObservableList<FoodItem> foodItems = foodItemController.getAllFood();
+        String estilo = "";
         int horizontal = (int) (width / 200);
         int vertical = (int) (height / 200);
 
@@ -139,24 +140,33 @@ public class AdminProductos extends Stage {
         hbox.setAlignment(Pos.CENTER_LEFT);
         if (height < 1000) {
             hbox.setPrefSize(width, 100);
+            estilo = "campo-texto-producto";
+            hbox.setSpacing(20);
         } else {
+            estilo = "campo-texto";
             hbox.setPrefSize(width, height*.1);
+            hbox.setSpacing(40);
         }
         hbox.setPadding(new Insets(30));
-        hbox.setSpacing(40);
+
 
         Label lbl = new Label("Producto");
-        lbl.getStyleClass().add("campo-texto");
+        lbl.getStyleClass().add(estilo);
 
         TextField itemField = new TextField();
-        itemField.getStyleClass().add("campo-texto");
+
+        itemField.setOnMouseClicked(mouseEvent ->
+        {
+            FileComponent.abrirTecladoVirtual();
+        });
+        itemField.getStyleClass().add(estilo);
         hbox.getChildren().addAll(lbl, itemField);
 
         lbl = new Label("Imagen");
-        lbl.getStyleClass().add("campo-texto");
+        lbl.getStyleClass().add(estilo);
 
         Button btnCargar = new Button("CARGAR IMAGEN");
-        btnCargar.getStyleClass().add("campo-texto");
+        btnCargar.getStyleClass().add(estilo);
         btnCargar.setOnAction(e -> {
             pathImage = fileComponent.cargarImagen(stagePadre);
             imageView.setImage(fileComponent.getImage(pathImage));
@@ -168,15 +178,20 @@ public class AdminProductos extends Stage {
         hbox.getChildren().addAll(lbl, labelMessage, imageView, btnCargar);
 
         lbl = new Label("Precio");
-        lbl.getStyleClass().add("campo-texto");
+        lbl.getStyleClass().add(estilo);
 
         precio = new TextField();
-        itemField.getStyleClass().add("campo-texto");
+        precio.getStyleClass().add(estilo);
+        precio.setOnMouseClicked(mouseEvent ->
+        {
+            FileComponent.abrirTecladoVirtual();
+        });
+        itemField.getStyleClass().add(estilo);
 
         hbox.getChildren().addAll(lbl, precio);
 
         lbl = new Label("Selecciona la categoria");
-        lbl.getStyleClass().add("campo-texto");
+        lbl.getStyleClass().add(estilo);
 
         /*
         * Agregando checkbox para categorias
@@ -184,6 +199,7 @@ public class AdminProductos extends Stage {
         * */
 
         categoriasBox = new ComboBox<>();
+        categoriasBox.getStyleClass().add(estilo);
 
         for(Categoria c : categoriaController.getAllCategory())
         categoriasBox.getItems().add(c.getCategory());
@@ -191,7 +207,7 @@ public class AdminProductos extends Stage {
         hbox.getChildren().addAll(lbl, categoriasBox);
 
         Button btnCrear = new Button("CREAR PRODUCTO");
-        btnCrear.getStyleClass().add("campo-texto");
+        btnCrear.getStyleClass().add(estilo);
         btnCrear.setOnAction(e -> {
             if (itemField.getText().isBlank() || labelMessage.getText().isBlank() || precio.getText().isBlank() || categoriasBox.getSelectionModel().getSelectedItem().toString().isBlank()) {
                 FileComponent.mostrarMensaje("NO SE PUEDE AGREGAR EL PRODUCTO, VUELVA A INTENTAR...");
@@ -240,7 +256,15 @@ public class AdminProductos extends Stage {
         // Crear campos y controles del diálogo
         GridPane grid = new GridPane();
         TextField campoNombre = new TextField(cateNombre);
+        campoNombre.setOnMouseClicked(mouseEvent ->
+        {
+            FileComponent.abrirTecladoVirtual();
+        });
         TextField campoPrecio = new TextField(catePrecio+"");
+        campoPrecio.setOnMouseClicked(mouseEvent ->
+        {
+            FileComponent.abrirTecladoVirtual();
+        });
         Button botonElegirImagen = new Button("Elegir Imagen");
 
         grid.add(new Label("Nombre:"), 0, 0);

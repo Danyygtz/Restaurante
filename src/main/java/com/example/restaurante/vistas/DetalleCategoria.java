@@ -26,7 +26,7 @@ public class DetalleCategoria extends Stage {
     private VBox vBoxMenu;
     private HBox hBoxMenu;
     private Button btnProducto;
-    GridPane gridPane;
+    private GridPane gridPane;
     private FileComponent fileComponent = new FileComponent();
     private FoodItemController foodItemController = new FoodItemController();
     public void mostrar(Stage stagePadre, String title, GridPane gridPane, int idCategory) {
@@ -46,7 +46,7 @@ public class DetalleCategoria extends Stage {
 
     private void CrearUI(double width, double height, int idCategory){
         ObservableList<FoodItem> foodItems = foodItemController.getAllFoodFromCategory(idCategory);
-        int horizontal = (int) (width / 200.0);
+        int horizontal = (int) ((width - width*.3) / 200.0);
         int vertical = (int) (height / 200.0);
 
         gridPane.setHgap(horizontal);
@@ -95,7 +95,7 @@ public class DetalleCategoria extends Stage {
                         contador.setText(c+"");
                         TablaTicket.Item newItem = new TablaTicket.Item(
                                 product.getFood(),
-                                product.getId(),
+                                1,
                                 Float.parseFloat(""+product.getPrice())
                         );
                         TablaTicket.data.add(newItem);

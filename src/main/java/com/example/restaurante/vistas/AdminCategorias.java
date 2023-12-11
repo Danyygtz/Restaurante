@@ -137,6 +137,10 @@ public class AdminCategorias extends Stage {
         vbox.setSpacing(12);
 
         TextField category = new TextField();
+        category.setOnMouseClicked(mouseEvent ->
+        {
+            FileComponent.abrirTecladoVirtual();
+        });
         category.getStyleClass().add("campo-texto");
         //vbox.getChildren().addAll(lbl, category);
         //hbox.getChildren().add(vbox);
@@ -213,6 +217,11 @@ public class AdminCategorias extends Stage {
         // Crear campos y controles del diálogo
         GridPane grid = new GridPane();
         TextField campoNombre = new TextField(cateNombre);
+        campoNombre.setOnMouseClicked(mouseEvent ->
+        {
+            FileComponent.abrirTecladoVirtual();
+        });
+
         Button botonElegirImagen = new Button("Elegir Imagen");
 
         grid.add(new Label("Nombre:"), 0, 0);

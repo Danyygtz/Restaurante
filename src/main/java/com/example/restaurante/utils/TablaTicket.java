@@ -91,6 +91,9 @@ public class TablaTicket {
         public SimpleStringProperty getStringProperty() {
             return stringProperty;
         }
+        public String getStringValue() {
+            return stringProperty.get();
+        }
 
         public SimpleIntegerProperty getIntegerProperty() {
             return integerProperty;

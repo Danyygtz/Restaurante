@@ -49,6 +49,11 @@ label:hover{
     -fx-text-fill: white;
 }
 
+.campo-texto-producto {
+    -fx-font-size: 20px;
+    -fx-padding: 10px;
+}
+
 .campo-texto {
     -fx-font-size: 30px;
     -fx-padding: 10px;

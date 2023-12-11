@@ -1,7 +1,12 @@
 package com.example.restaurante.vistas;
 
 import com.example.restaurante.controller.CategoriaController;
+import com.example.restaurante.controller.DetalleOrdenesController;
+import com.example.restaurante.controller.FoodItemController;
+import com.example.restaurante.controller.OrdenesController;
 import com.example.restaurante.modelos.Categoria;
+import com.example.restaurante.modelos.DetalleOrdenes;
+import com.example.restaurante.modelos.Ordenes;
 import com.example.restaurante.utils.FileComponent;
 import com.example.restaurante.utils.TablaTicket;
 import javafx.collections.ObservableList;
@@ -17,10 +22,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import java.sql.SQLOutput;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Restaurante extends Stage {
     public static final Label lblCosto = new Label("0.00");
     private Scene scene;
-    DetalleCategoria detalleCategoria = new DetalleCategoria();
+    private DetalleCategoria detalleCategoria = new DetalleCategoria();
+    private Map<String, Integer> productCounter = new HashMap<>();
+    private DetalleOrdenesController detalleOrdenesController = new DetalleOrdenesController();
+    private FoodItemController foodItemController = new FoodItemController();
+    private OrdenesController ordenesController = new OrdenesController();
     private Stage stagePadre;
     private BorderPane borderPane;
     private VBox vBoxMenu;
@@ -108,6 +123,34 @@ public class Restaurante extends Stage {
             if (fileComponent.mostrarDialogoDeConfirmacion()) {
                 // Aquí puedes realizar la operación
                 FileComponent.mostrarMensaje("Operación realizada con éxito.");
+                ObservableList<TablaTicket.Item> items = tablaTicket.tableView.getItems();
+                for (TablaTicket.Item i : items) {
+                    productCounter.merge(i.getStringValue(), 1, Integer::sum);
+                }
+
+                float total = Float.parseFloat(lblCosto.getText());
+                Ordenes ordenes = new Ordenes(new Date(), total);
+                int idOrden = ordenesController.crearOrden(ordenes);
+
+                for (Map.Entry<String, Integer> entry: productCounter.entrySet()) {
+                    // quantity
+                    int quantity = entry.getValue();
+                    // food name
+                    String food_name = entry.getKey();
+                    // price
+
+                    System.out.println("PRIMEROS PRECIOS");
+                    System.out.println("ID ORDEN: " + idOrden);
+                    System.out.println("FOOD NAME: " + food_name);
+                    System.out.println("ID FOOD: " + foodItemController.getFoodIDByName(food_name));
+                    System.out.println("QUANTITY: "+ quantity);
+                    System.out.println("PRICE" + foodItemController.getPriceByFoodName(food_name));
+                    System.out.println("FINAL");
+                    System.out.println();
+
+                    DetalleOrdenes detalleOrdenes = new DetalleOrdenes(idOrden, foodItemController.getFoodIDByName(entry.getKey()), quantity, foodItemController.getPriceByFoodName(entry.getKey()));
+                    detalleOrdenesController.crearDetalleOrden(detalleOrdenes);
+                }
             } else {
                 FileComponent.mostrarMensaje("Operación cancelada.");
             }

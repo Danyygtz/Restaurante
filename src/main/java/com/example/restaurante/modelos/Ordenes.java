@@ -15,6 +15,17 @@ public class Ordenes {
         this.pago = pago;
     }
 
+    public Ordenes(Date date, float amount, Pago pago) {
+        this.date = date;
+        this.amount = amount;
+        this.pago = pago;
+    }
+
+    public Ordenes(Date date, float amount) {
+        this.date = date;
+        this.amount = amount;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -23,8 +34,9 @@ public class Ordenes {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public java.sql.Date getDate() {
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+        return sqlDate;
     }
 
     public void setDate(Date date) {

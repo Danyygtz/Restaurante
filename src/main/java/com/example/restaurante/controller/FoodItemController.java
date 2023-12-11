@@ -16,6 +16,45 @@ public class FoodItemController {
     public FoodItemController() {
         conexion = Conexion.getConnection();
     }
+    public int getFoodIDByName(String foodName) {
+        String consulta = "SELECT id FROM food_items WHERE food=?";
+
+        // Preparar la declaración SQL con un parámetro
+        try {
+            assert conexion != null;
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                statement.setString(1, foodName);
+                // Ejecutar la consulta
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    return resultSet.getInt("id");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public float getPriceByFoodName(String foodName) {
+        String consulta = "SELECT price FROM food_items WHERE food=?";
+
+        // Preparar la declaración SQL con un parámetro
+        try {
+            assert conexion != null;
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                statement.setString(1, foodName);
+                // Ejecutar la consulta
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    return resultSet.getFloat("price");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1.0f;
+    }
     public ObservableList<FoodItem> getAllFood() {
         foodItems.clear();
         // Consulta SQL
