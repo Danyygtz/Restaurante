@@ -15,6 +15,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -50,7 +51,8 @@ public class Restaurante extends Stage {
         stagePadre.setWidth(bounds.getWidth());
         stagePadre.setHeight(bounds.getHeight());
         this.stagePadre = stagePadre;
-        CrearUI(bounds.getWidth(), bounds.getHeight());
+        // CrearUI(bounds.getWidth(), bounds.getHeight());
+        CrearUI(1000, 900);
         scene = new Scene(borderPane);
         scene.getStylesheets().add(getClass().getResource("/estilos/estilos.css").toExternalForm());
         stagePadre.setTitle("Restaurante");
@@ -106,7 +108,11 @@ public class Restaurante extends Stage {
             }
         }
 
-        borderPane.setLeft(gridPane);
+        ScrollPane scrollPane = new ScrollPane(gridPane);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        //scrollPane.setPrefWidth(width);
+        borderPane.setLeft(scrollPane);
 
         TablaTicket tablaTicket = new TablaTicket(width * .3, height);
 

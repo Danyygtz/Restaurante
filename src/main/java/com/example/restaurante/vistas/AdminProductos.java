@@ -50,7 +50,8 @@ public class AdminProductos extends Stage {
         stagePadre.setY(bounds.getMinY());
         stagePadre.setWidth(bounds.getWidth());
         stagePadre.setHeight(bounds.getHeight());
-        crearUI(bounds.getWidth(), bounds.getHeight());
+        //crearUI(bounds.getWidth(), bounds.getHeight());
+        crearUI(1000, 900);
 
         stagePadre.setTitle("Productos");
     }

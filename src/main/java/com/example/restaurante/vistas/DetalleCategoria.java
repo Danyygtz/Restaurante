@@ -40,7 +40,8 @@ public class DetalleCategoria extends Stage {
         this.stagePadre = stagePadre;
         this.gridPane = gridPane;
         this.gridPane.getChildren().clear();
-        CrearUI(bounds.getWidth(), bounds.getHeight(), idCategory);
+        //CrearUI(bounds.getWidth(), bounds.getHeight(), idCategory);
+        CrearUI(1000, 900, idCategory);
         stagePadre.setTitle(title);
     }
 
